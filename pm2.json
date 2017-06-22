@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "thinkJs-demo",
+    "name": "project_path",
     "script": "www/production.js",
-    "cwd": "/Users/janber/Documents/code/thinkJs-demo",
+    "cwd": "/Users/janber/Documents/code/project_path",
     "exec_mode": "cluster",
     "instances": 0,
     "max_memory_restart": "1G",
