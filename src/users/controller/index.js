@@ -8,8 +8,11 @@ export default class extends Base {
    * @return {Promise} []
    */
   indexAction(){
-    //auto render template file index_index.html
-    let data = 'wellcome to exciting-hub';
+    let data = 'users-model';
+    this.success(data);
+  }
+  addAction(){
+    let data = 'users-model-add';
     this.success(data);
   }
 }
