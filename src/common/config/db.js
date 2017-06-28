@@ -3,20 +3,23 @@
  * db config
  * @type {Object}
  */
-export default {
-  type: 'mysql',
+ export default {
+  type: 'mongo',
+  log_sql: true,
+  log_connect: true,
   adapter: {
-    mysql: {
-      host: '127.0.0.1',
-      port: '',
-      database: '',
-      user: '',
-      password: '',
-      prefix: '',
-      encoding: 'utf8'
-    },
     mongo: {
-
+      prefix: 'think_',
+      database: 'excited',
+      encoding: 'utf8',
+      nums_per_page: 10,
+      log_sql: true,
+      log_connect: true,
+      cache: {
+        on: true,
+        type: '',
+        timeout: 3600
+      }
     }
   }
 };

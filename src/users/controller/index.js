@@ -11,8 +11,4 @@ export default class extends Base {
     let data = 'users-model';
     this.success(data);
   }
-  addAction(){
-    let data = 'users-model-add';
-    this.success(data);
-  }
 }
