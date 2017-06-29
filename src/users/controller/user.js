@@ -17,10 +17,10 @@ export default class extends Base {
     let data_exist = await usersModel.where({account: param.account}).find();
     if(think.isEmpty(data_exist)){
     	let user = await usersModel.addUser(param);
-    	this.session('userInfo',user);
+    	await this.session('userInfo',user);
     	this.success({userInfo:user,result:true});
     } else {
-    	this.fail(1001, 'this account is exist');                    //该账号已被注册
+    	this.fail(1001, 'this account is exist');                     //该账号已被注册
     }
   }
   /**
@@ -41,18 +41,55 @@ export default class extends Base {
    * 登录
    *
    */
-  async loginAction(http){
-  	console.log(http.session('userInfo'));
+  async loginAction(){
   	let param = this.post();
   	let usersModel = this.model('users');
   	let data_exist = await usersModel.where({account: param.account, password: param.password}).find();
   	if (!think.isEmpty(data_exist)) {
-  		console.log(data_exist)
-  		await http.session('userInfo', data_exist);
+  		await this.session('userInfo',data_exist);
   		this.success({result: true});
   	} else {
   		this.success({result: false});
   	}
+  }
+  /**
+   * 登出
+   *
+   */
+  async logoutAction(){
+    let usersModel = this.model('users');
+    await this.session();
+    console.log(this.session('userInfo'))
+    this.success({result: true});
+  }
+  /**
+   * 获取用户信息
+   *
+   */
+  async getuserinfoAction(){
+    let usersModel = this.model('users');
+    let session_ = await this.session('userInfo');
+    let userInfo = await usersModel.where({account: session_.account}).find();
+    this.success({data: userInfo});
+    
+  }
+  /**
+   * 编辑用户信息
+   *
+   */
+  async updateAction(){
+    let param = this.post();
+    let usersModel = this.model('users'),
+        condiction = {_id: param._id},
+        new_info = {
+          nickname   : param.nickname, 
+          user_id    : param._id,
+          avatar     : param.avatar || [],
+          sex        : param.sex,
+          introduction:param.introduction
+        }
+    await usersModel.where(condiction).update(new_info);
+    this.success({data: true});
   }
 
 }
