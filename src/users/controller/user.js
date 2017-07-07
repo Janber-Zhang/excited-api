@@ -10,13 +10,14 @@ export default class extends Base {
   async addAction(){
   	let param = this.post();
   	let usersModel = this.model('users');
-  	if (!param.account || !param.password || !param.nickname) {       //注册信息不全，返回错误信息
+  	if (!param.account || !param.password || !param.nickname) { //注册信息不全，返回错误信息
   		this.fail(1000, 'someInfo required is not exist');
   		return
   	}
     let data_exist = await usersModel.where({account: param.account}).find();
     if(think.isEmpty(data_exist)){
-    	let user = await usersModel.addUser(param);
+    	await usersModel.addUser(param);
+      let user = await usersModel.where({account: param.account}).find();
     	this.success({result:true,user:user});                    //注册成功，返回用户信息
     } else {
     	this.fail(1001, 'this account is exist');                 //该账号已被注册
@@ -56,7 +57,7 @@ export default class extends Base {
    */
   async getuserinfoAction(){
     let usersModel = this.model('users');
-    let user_id = this.get('current_user_id')
+    let user_id = this.get('current_user_id');
     let userInfo = await usersModel.where({_id: user_id}).find();
     this.success({user: userInfo});
     
