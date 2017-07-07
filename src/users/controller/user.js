@@ -17,10 +17,9 @@ export default class extends Base {
     let data_exist = await usersModel.where({account: param.account}).find();
     if(think.isEmpty(data_exist)){
     	let user = await usersModel.addUser(param);
-    	await this.session('userInfo',user);
-    	this.success({userInfo:user,result:true});
+    	this.success({result:true,user:user});                    //注册成功，返回用户信息
     } else {
-    	this.fail(1001, 'this account is exist');                     //该账号已被注册
+    	this.fail(1001, 'this account is exist');                 //该账号已被注册
     }
   }
   /**
@@ -46,21 +45,10 @@ export default class extends Base {
   	let usersModel = this.model('users');
   	let data_exist = await usersModel.where({account: param.account, password: param.password}).find();
   	if (!think.isEmpty(data_exist)) {
-  		await this.session('userInfo',data_exist);
-  		this.success({result: true});
+  		this.success({result: true,user:data_exist});
   	} else {
   		this.success({result: false});
   	}
-  }
-  /**
-   * 登出
-   *
-   */
-  async logoutAction(){
-    let usersModel = this.model('users');
-    await this.session();
-    console.log(this.session('userInfo'))
-    this.success({result: true});
   }
   /**
    * 获取用户信息
@@ -68,9 +56,9 @@ export default class extends Base {
    */
   async getuserinfoAction(){
     let usersModel = this.model('users');
-    let session_ = await this.session('userInfo');
-    let userInfo = await usersModel.where({account: session_.account}).find();
-    this.success({data: userInfo});
+    let user_id = this.get('current_user_id')
+    let userInfo = await usersModel.where({_id: user_id}).find();
+    this.success({user: userInfo});
     
   }
   /**
@@ -78,18 +66,23 @@ export default class extends Base {
    *
    */
   async updateAction(){
-    let param = this.post();
+    let param = this.post(),
+        user = JSON.parse(param.user);
+        console.log(user)
+        console.log('####')
     let usersModel = this.model('users'),
-        condiction = {_id: param._id},
+        condiction = {_id: user._id},
         new_info = {
-          nickname   : param.nickname, 
-          user_id    : param._id,
-          avatar     : param.avatar || [],
-          sex        : param.sex,
-          introduction:param.introduction
+          nickname   : user.nickname, 
+          user_id    : user._id,
+          avatar     : user.avatar || [],
+          sex        : user.sex,
+          introduction:user.introduction
         }
+        console.log(new_info)
+        console.log(condiction)
     await usersModel.where(condiction).update(new_info);
-    this.success({data: true});
+    this.success({result: true});
   }
 
 }

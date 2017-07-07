@@ -2,17 +2,15 @@
 
 export default class extends think.controller.base {
   /**
-   * 登录验证
+   * 用户信息验证
    */
   async __before(){
   	let http = this.http;
+    let current_user_id = this.post('current_user_id') || this.get('current_user_id');
   	if(http.controller === 'user' && ['login','add','checkexist'].indexOf(http.action) > -1){
       return;   
     }
-    let userInfo = await this.session('userInfo');
-    console.log(userInfo);
-    if(think.isEmpty(userInfo)){
-      console.log('need login')
+    if(!current_user_id){
     	return this.fail(1111, 'need login');
     }
     return
