@@ -69,8 +69,6 @@ export default class extends Base {
   async updateAction(){
     let param = this.post(),
         user = JSON.parse(param.user);
-        console.log(user)
-        console.log('####')
     let usersModel = this.model('users'),
         condiction = {_id: user._id},
         new_info = {
@@ -80,8 +78,6 @@ export default class extends Base {
           sex        : user.sex,
           introduction:user.introduction
         }
-        console.log(new_info)
-        console.log(condiction)
     await usersModel.where(condiction).update(new_info);
     this.success({result: true});
   }
