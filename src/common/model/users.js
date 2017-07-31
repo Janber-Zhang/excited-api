@@ -10,6 +10,7 @@ export default class extends think.model.mongo {
 			password      :    '',
 			avatar        :    [],
 			introduction  :    '这个人很懒，什么也没写。。。',
+			birthday      :    ''
 		}
 		let USER = {};
 		Object.assign(USER, default_, user);

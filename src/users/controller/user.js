@@ -76,7 +76,8 @@ export default class extends Base {
           user_id    : user._id,
           avatar     : user.avatar || [],
           sex        : user.sex,
-          introduction:user.introduction
+          introduction:user.introduction,
+          birthday   : user.birthday || ''
         }
     await usersModel.where(condiction).update(new_info);
     this.success({result: true});
