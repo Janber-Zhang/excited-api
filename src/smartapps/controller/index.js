@@ -8,18 +8,20 @@ export default class extends Base {
    * @return {Promise} []
    */
   async addrecordAction(){
-    let param = this.post();
+    let param    = this.post();
   	let appModel = this.model('smartapps');
-  	let userModel = this.model('users');
-  	let onwerObj = await userModel.where({_id: param.current_user_id}).find();
+  	let userModel= this.model('users');
+  	let ownerObj = await userModel.where({_id: param.current_user_id}).find();
+    let app_name = param.app_name;
+    let owner_id = param.current_user_id;
+    delete param['current_user_id'];
+    delete param['app_name'];
   	let params = {
-  		app_name  : param.app_name,
-  		type      : param.type,
-  		time_cost : param.mine_record,
-  		descr     : param.descr,
-  		owner     : param.current_user_id,
-  		nickname  : onwerObj.nickname,
-  		created   : +(new Date())
+  		app_name  : app_name,
+  		owner     : owner_id,
+  		nickname  : ownerObj.nickname,
+  		created   : +(new Date()),
+      data      : param
   	};
   	let insertId = await appModel.add(params)
   	this.success({result:true,data: 'SUCCESS'});   
@@ -33,15 +35,16 @@ export default class extends Base {
   	let appModel = this.model('smartapps');
   	let data = await appModel.where({app_name: param.app_name}).select();
   	let data_new = {};
+    // 扫雷特殊处理
   	if (param.app_name == 'mineSweeper'){
   		data.forEach(function(item){
-  			data_new[item.type] = data_new[item.type] || {dataList:[],myOrder: false};
-  			data_new[item.type]['dataList'].push(item);
+  			data_new[item.data.type] = data_new[item.data.type] || {dataList:[],myOrder: false};
+  			data_new[item.data.type]['dataList'].push(item);
   		});
   		for (let i in data_new) {
   			let foundMyId = false;
   			data_new[i]['dataList'].sort(function(left, right){
-  				return left.time_cost<right.time_cost?-1:1
+  				return left.data.time_cost<right.data.time_cost?-1:1
   			});
   			data_new[i]['dataList'].forEach(function(item, index){
   				if (item.owner == param.current_user_id && !foundMyId) {
