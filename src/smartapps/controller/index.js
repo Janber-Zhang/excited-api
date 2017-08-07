@@ -44,7 +44,7 @@ export default class extends Base {
   		for (let i in data_new) {
   			let foundMyId = false;
   			data_new[i]['dataList'].sort(function(left, right){
-  				return left.data.time_cost<right.data.time_cost?-1:1
+  				return left.data.mine_record<right.data.mine_record?-1:1
   			});
   			data_new[i]['dataList'].forEach(function(item, index){
   				if (item.owner == param.current_user_id && !foundMyId) {
