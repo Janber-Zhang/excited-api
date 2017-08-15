@@ -83,4 +83,17 @@ export default class extends Base {
     this.success({result: true});
   }
 
+  /**
+   *
+   *
+   */
+  async edituserAction(){
+    let param = this.post();
+    let usersModel = this.model('users');
+    let condiction = {_id: param.current_user_id};
+    delete param.current_user_id;
+    await usersModel.where(condiction).update(param);
+    this.success({result: true});
+  }
+
 }
