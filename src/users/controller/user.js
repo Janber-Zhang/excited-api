@@ -84,7 +84,7 @@ export default class extends Base {
   }
 
   /**
-   *
+   * 编辑用户信息
    *
    */
   async edituserAction(){

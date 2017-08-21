@@ -66,7 +66,9 @@ export default class extends Base {
   		if(!data_new['High']){
   			data_new['High'] = {dataList:[],myOrder: false,counts:0}
   		}
-  	}
+  	} else {
+      data_new.dataList = data;
+    }
   	this.success({result:true,data: data_new});
   }
 }
