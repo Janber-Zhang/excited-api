@@ -41,5 +41,22 @@ export default class extends Base {
     }
   	let data = await orderModel.where(query_str).select();
   	this.success({result:true,data: data});
+  },
+  /**
+   * getAppRecord Action 获取应用数据记录
+   * @return {Promise} []
+   */
+  async deleteAction(){
+    let orderModel = this.model('order');
+    let param    = this.post();
+    let query_str = {};
+    if (param.date) {
+      query_str.date = param.date;
+    }
+    if (param.type) {
+      query_str._id = param._id;
+    }
+    let userInfo = await usersModel.where(query_str).delete();
+    this.success({result:true,data: 'success'});
   }
 }
