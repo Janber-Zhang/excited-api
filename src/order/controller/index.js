@@ -55,7 +55,13 @@ export default class extends Base {
     } else {
        this.fail(1001, 'some params is needed');  
     }
-    let userInfo = await orderModel.where(query_str).delete();
-    this.success({result:true,data: 'success'});
+    let data_exist = await orderModel.where(query_str).find();
+    if (think.isEmpty(data_exist)) {
+      this.fail(1001, '未查询到该数据');  
+    } else {
+      let userInfo = await orderModel.where(query_str).delete();
+      this.success({result:true,data: 'success'});
+    }
+    
   }
 }
