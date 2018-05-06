@@ -41,7 +41,7 @@ export default class extends Base {
     }
   	let data = await orderModel.where(query_str).select();
   	this.success({result:true,data: data});
-  },
+  }
   /**
    * getAppRecord Action 获取应用数据记录
    * @return {Promise} []
@@ -56,7 +56,7 @@ export default class extends Base {
     if (param.type) {
       query_str._id = param._id;
     }
-    let userInfo = await usersModel.where(query_str).delete();
+    let userInfo = await orderModel.where(query_str).delete();
     this.success({result:true,data: 'success'});
   }
 }
