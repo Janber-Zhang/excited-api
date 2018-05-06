@@ -50,11 +50,10 @@ export default class extends Base {
     let orderModel = this.model('order');
     let param    = this.post();
     let query_str = {};
-    if (param.date) {
-      query_str.date = param.date;
-    }
-    if (param.type) {
+    if (param._id) {
       query_str._id = param._id;
+    } else {
+       this.fail(1001, 'some params is needed');  
     }
     let userInfo = await orderModel.where(query_str).delete();
     this.success({result:true,data: 'success'});
