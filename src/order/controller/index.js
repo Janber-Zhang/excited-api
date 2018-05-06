@@ -19,7 +19,8 @@ export default class extends Base {
     }
     let params = {
       date      : param.date,
-      data      : param.data
+      data      : param.data,
+      type      : param.type || 'test'
     };
     let insertId = await orderModel.add(params)
     this.success({result: true, data: insertId})
@@ -34,6 +35,9 @@ export default class extends Base {
     let query_str = {};
     if (param.date) {
       query_str.date = param.date;
+    }
+    if (param.type) {
+      query_str.type = param.type;
     }
   	let data = await orderModel.where(query_str).select();
   	this.success({result:true,data: data});
